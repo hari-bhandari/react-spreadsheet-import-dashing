@@ -62,7 +62,7 @@
     "framer-motion": "^10.16.4",
     "js-levenshtein": "1.1.6",
     "lodash": "4.17.21",
-    "react-data-grid": "7.0.0-beta.13",
+    "react-data-grid": "^7.0.0-beta.47",
     "react-dropzone": "14.2.3",
     "react-icons": "4.11.0",
     "uuid": "^9.0.1",
@@ -88,6 +88,7 @@
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
     "@testing-library/user-event": "14.4.3",
+    "identity-obj-proxy": "3.0.0",
     "@types/jest": "27.4.1",
     "@types/js-levenshtein": "1.1.1",
     "@types/node": "^20.8.7",
@@ -149,7 +150,8 @@
       "^.+\\.mjs$": "ts-jest/dist"
     },
     "moduleNameMapper": {
-      "~/(.*)": "<rootDir>/src/$1"
+      "~/(.*)": "<rootDir>/src/$1",
+      "\\.(css|less|scss)$": "identity-obj-proxy"
     },
     "modulePathIgnorePatterns": [
       "<rootDir>/e2e/"

@@ -1,4 +1,4 @@
-import type { Column } from "react-data-grid"
+import type { Column, RenderHeaderCellProps, RenderCellProps } from "react-data-grid"
 import { Box, Tooltip } from "@chakra-ui/react"
 import type { Fields } from "../../../types"
 import { CgInfo } from "react-icons/cg"
@@ -9,7 +9,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>) =>
       key: column.key,
       name: column.label,
       minWidth: 150,
-      headerRenderer: () => (
+      renderHeaderCell: (_: RenderHeaderCellProps<any, unknown>): React.ReactNode => (
         <Box display="flex" gap={1} alignItems="center" position="relative">
           <Box flex={1} overflow="hidden" textOverflow="ellipsis">
             {column.label}
@@ -23,7 +23,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>) =>
           )}
         </Box>
       ),
-      formatter: ({ row }) => (
+      renderCell: ({ row }: RenderCellProps<any, unknown>): React.ReactNode => (
         <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
           {row[column.key]}
         </Box>

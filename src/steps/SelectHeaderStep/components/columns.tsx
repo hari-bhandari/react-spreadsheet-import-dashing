@@ -1,11 +1,11 @@
-import { Column, FormatterProps, useRowSelection } from "react-data-grid"
+import { Column, type RenderCellProps, useRowSelection } from "react-data-grid"
 import { Radio } from "@chakra-ui/react"
 import type { RawData } from "../../../types"
 
 const SELECT_COLUMN_KEY = "select-row"
 
-function SelectFormatter(props: FormatterProps<unknown>) {
-  const [isRowSelected, onRowSelectionChange] = useRowSelection()
+function SelectFormatter(props: RenderCellProps<unknown, unknown>): React.ReactNode {
+  const { isRowSelected, onRowSelectionChange } = useRowSelection()
 
   return (
     <Radio
@@ -33,7 +33,7 @@ export const SelectColumn: Column<any, any> = {
   sortable: false,
   frozen: true,
   cellClass: "rdg-radio",
-  formatter: SelectFormatter,
+  renderCell: SelectFormatter,
 }
 
 export const generateSelectionColumns = (data: RawData[]) => {

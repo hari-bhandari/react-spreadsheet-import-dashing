@@ -24,9 +24,8 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
     sortable: false,
     frozen: true,
     cellClass: "rdg-checkbox",
-    formatter: (props) => {
-      // eslint-disable-next-line  react-hooks/rules-of-hooks
-      const [isRowSelected, onRowSelectionChange] = useRowSelection()
+    renderCell: (props) => {
+      const { isRowSelected, onRowSelectionChange } = useRowSelection()
       return (
         <Checkbox
           bg="white"
@@ -49,7 +48,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
       name: column.label,
       minWidth: 150,
       resizable: true,
-      headerRenderer: () => (
+      renderHeaderCell: () => (
         <Box display="flex" gap={1} alignItems="center" position="relative">
           <Box flex={1} overflow="hidden" textOverflow="ellipsis">
             {column.label}
@@ -64,14 +63,14 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
         </Box>
       ),
       editable: column.fieldType.type !== "checkbox",
-      editor: ({ row, onRowChange, onClose }) => {
+      renderEditCell: ({ row, onRowChange, onClose }) => {
         let component
 
         switch (column.fieldType.type) {
           case "select":
             component = (
               <TableSelect
-                value={column.fieldType.options.find((option) => option.value === (row[column.key] as string))}
+                value={column.fieldType.options.find((option) => option.value === ((row as any)[column.key] as string))}
                 onChange={(value) => {
                   onRowChange({ ...row, [column.key]: value?.value }, true)
                 }}
@@ -87,7 +86,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
                   variant="unstyled"
                   autoFocus
                   size="small"
-                  value={row[column.key] as string}
+                  value={(row as any)[column.key] as string}
                   onChange={(event: ChangeEvent<HTMLInputElement>) => {
                     onRowChange({ ...row, [column.key]: event.target.value })
                   }}
@@ -99,10 +98,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
 
         return component
       },
-      editorOptions: {
-        editOnClick: true,
-      },
-      formatter: ({ row, onRowChange }) => {
+      renderCell: ({ row, onRowChange }) => {
         let component
 
         switch (column.fieldType.type) {
@@ -117,9 +113,9 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
                 }}
               >
                 <Switch
-                  isChecked={row[column.key] as boolean}
+                  isChecked={(row as any)[column.key] as boolean}
                   onChange={() => {
-                    onRowChange({ ...row, [column.key]: !row[column.key as T] })
+                    onRowChange({ ...row, [column.key]: !(row as any)[column.key] })
                   }}
                 />
               </Box>
@@ -128,14 +124,14 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
           case "select":
             component = (
               <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
-                {column.fieldType.options.find((option) => option.value === row[column.key as T])?.label || null}
+                {column.fieldType.options.find((option) => option.value === (row as any)[column.key])?.label || null}
               </Box>
             )
             break
           default:
             component = (
               <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
-                {row[column.key as T]}
+                {(row as any)[column.key]}
               </Box>
             )
         }

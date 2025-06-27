@@ -1,4 +1,4 @@
-import DataGrid, { DataGridProps } from "react-data-grid"
+import DataGrid, { type DataGridProps } from "react-data-grid"
 import { useRsi } from "../hooks/useRsi"
 
 interface Props<Data> extends DataGridProps<Data> {
